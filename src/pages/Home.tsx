@@ -1,4 +1,5 @@
-import Table, { Field } from "../components/table";
+import TableView, { Field } from "../components/table";
+import TableColumnHeader from "../components/table/components/TableColumnHeader";
 import styles from "./pages.module.css";
 
 export type Entry = {
@@ -69,7 +70,11 @@ const Home = () => {
   }
   return (
     <div className={styles.container}>
-      <Table data={dummyData} fields={fields} />
+      <TableView
+        data={dummyData}
+        fields={fields}
+        HeaderComponent={TableColumnHeader}
+      />
     </div>
   );
 };
