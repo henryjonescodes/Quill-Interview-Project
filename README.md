@@ -1,2 +1,1 @@
-# Quill-Interview-Project
-Created with CodeSandbox
+# Quill Interview Project - Henry Jones
