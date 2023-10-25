@@ -1,8 +1,7 @@
-import React, { useEffect } from "react";
-import styles from "./pages.module.css";
 import Table, { Field } from "../components/table";
+import styles from "./pages.module.css";
 
-type Entry = {
+export type Entry = {
   id: string;
   dateModified: Date;
   dateCreated: Date;
@@ -70,7 +69,7 @@ const Home = () => {
   }
   return (
     <div className={styles.container}>
-      <Table rows={dummyData} columns={fields} />
+      <Table data={dummyData} fields={fields} />
     </div>
   );
 };
