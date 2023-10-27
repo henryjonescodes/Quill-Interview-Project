@@ -1,6 +1,7 @@
 // A debounced input react component
 
 import { useEffect, useState } from "react";
+import styles from "./../table.module.css";
 
 type Props = {
   value: string | number;
@@ -31,6 +32,7 @@ const TableInput = ({
   return (
     <input
       {...props}
+      className={styles.input}
       value={value}
       onChange={(e) => setValue(e.target.value)}
     />

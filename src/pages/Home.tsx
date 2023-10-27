@@ -1,14 +1,6 @@
-import TableView, { Field } from "../components/table";
+import TableView, { Entry, Field } from "../components/table";
 import TableColumnHeader from "../components/table/components/TableColumnHeader";
 import styles from "./pages.module.css";
-
-export type Entry = {
-  id: string;
-  dateModified: Date;
-  dateCreated: Date;
-  assignee?: string;
-  storyPoints?: number;
-};
 
 const fields: Field[] = [
   {
@@ -53,8 +45,7 @@ const Home = () => {
       const dateModified = getRandomDate(dateCreated, new Date());
       const assignee =
         Math.random() < 0.5 ? `Assignee-${index + 1}` : undefined;
-      const storyPoints =
-        Math.random() < 0.5 ? Math.floor(Math.random() * 10) + 1 : undefined;
+      const storyPoints = Math.floor(Math.random() * 10) + 1;
 
       return {
         id,

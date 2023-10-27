@@ -1,13 +1,18 @@
 import { Row, flexRender } from "@tanstack/react-table";
 import React from "react";
+import styles from "./../table.module.css";
 
 export type TableRowProps = {
   row: Row<any>;
 };
 const TableRow = ({ row }: TableRowProps) => {
   return (
-    <tr key={row.id}>
+    <tr key={row.id} className={styles.row}>
       {row.getVisibleCells().map((cell) => {
+        if (cell.getValue() instanceof Date) {
+          const _date = cell.getValue() as Date;
+          return <td key={cell.id}>{_date.toLocaleDateString()}</td>;
+        }
         return (
           <td key={cell.id}>
             {flexRender(cell.column.columnDef.cell, cell.getContext())}

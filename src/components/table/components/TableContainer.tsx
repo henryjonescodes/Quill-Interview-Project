@@ -1,10 +1,10 @@
 import React from "react";
-
+import styles from "./../table.module.css";
 export type TableContainerProps = {
   children: React.ReactNode;
 };
 const TableContainer = ({ children }: TableContainerProps) => {
-  return <div style={{ border: "1px solid green" }}>{children}</div>;
+  return <div className={styles.container}>{children}</div>;
 };
 
 export default TableContainer;

@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import {
+  ColumnDef,
   ColumnFiltersState,
   FilterFn,
   flexRender,
@@ -15,18 +16,23 @@ import {
 } from "@tanstack/react-table";
 
 import { RankingInfo } from "@tanstack/match-sorter-utils";
-import { Entry } from "../../pages/Home";
-import TableFilter from "./components/TableFilter";
-import TableInput from "./components/TableInput";
-import TablePageNavigator from "./components/TablePageNavigator";
-import { fuzzyFilter } from "./utils";
 import TableColumnHeader, {
   TableColumnHeaderProps,
 } from "./components/TableColumnHeader";
-import TableRow, { TableRowProps } from "./components/TableRow";
 import TableContainer, {
   TableContainerProps,
 } from "./components/TableContainer";
+import TablePageNavigator from "./components/TablePageNavigator";
+import TableRow, { TableRowProps } from "./components/TableRow";
+import TableFilter from "./components/table-filter";
+import styles from "./table.module.css";
+import {
+  dateRangeFilter,
+  dateRangeSort,
+  fuzzyFilter,
+  fuzzySort,
+  multipleFilter,
+} from "./utils";
 
 declare module "@tanstack/table-core" {
   interface FilterFns {
@@ -42,6 +48,16 @@ export interface Field {
   label: string;
   jsType: "date" | "string" | "number";
 }
+
+export type Entry = {
+  id: string;
+  dateModified: Date;
+  dateCreated: Date;
+  assignee?: string;
+  storyPoints?: number;
+};
+
+type ColumnType = ColumnDef<Entry>;
 
 interface TableProps {
   title?: string;
@@ -60,39 +76,53 @@ const TableView = ({
   HeaderComponent = TableColumnHeader,
   RowComponent = TableRow,
   ContainerComponent = TableContainer,
+  title = "Quill Table Demo",
 }: TableProps) => {
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
-  );
-  const [globalFilter, setGlobalFilter] = React.useState("");
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [globalFilter, setGlobalFilter] = useState<string | undefined>("");
 
-  const columns = React.useMemo(() => {
-    const createAccessor = (field: Field) => {
+  useEffect(() => {
+    console.log("Filters\n", columnFilters, globalFilter);
+  }, [columnFilters, globalFilter]);
+
+  const columns: ColumnType[] = React.useMemo(() => {
+    const optionsForField = (field: Field) => {
       switch (field.jsType) {
         case "date":
-          return (row: any) => new Date(row[field.name]).toLocaleDateString();
+          return {
+            sortingFn: dateRangeSort,
+            filterFn: dateRangeFilter,
+            // accessorKey: new Date(field.name),
+            // flexRender: (row: any) => {
+            //   new Date(row[field.name]).toLocaleDateString();
+            // },
+            accessorFn: (row: any) => new Date(row[field.name]),
+          };
         case "number":
-          return (row: any) => Number(row[field.name]);
+          return {
+            sortingFn: fuzzySort,
+            accessorFn: (row: any) => Number(row[field.name]),
+          };
         case "string":
         default:
-          return (row: any) => String(row[field.name]);
+          return {
+            sortingFn: fuzzySort,
+            filterFn: multipleFilter,
+            accessorFn: (row: any) => String(row[field.name]),
+          };
       }
     };
 
     const generatedColumns = fields.map((field) => ({
-      accessorFn: createAccessor(field),
       id: field.name,
       header: () => <span>{field.label}</span>,
-      // @ts-ignore // TODO: remove and fix
       footer: (props) => props.column.id,
-      // filterFn: "fuzzy",
-      // sortingFn: fuzzySort,
+      ...optionsForField(field),
     }));
 
     return [
       {
-        header: "Table",
-        // @ts-ignore // TODO: remove and fix
+        header: title,
         footer: (props) => props.column.id,
         columns: generatedColumns,
       },
@@ -100,8 +130,8 @@ const TableView = ({
   }, [fields]);
 
   const table = useReactTable({
-    data,
-    columns,
+    data: data as Entry[],
+    columns: columns as ColumnType[],
     filterFns: {
       fuzzy: fuzzyFilter,
     },
@@ -109,9 +139,6 @@ const TableView = ({
       columnFilters,
       globalFilter,
     },
-    onColumnFiltersChange: setColumnFilters,
-    onGlobalFilterChange: setGlobalFilter,
-    globalFilterFn: fuzzyFilter,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getSortedRowModel: getSortedRowModel(),
@@ -119,38 +146,30 @@ const TableView = ({
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
     getFacetedMinMaxValues: getFacetedMinMaxValues(),
-    debugTable: true,
-    debugHeaders: true,
-    debugColumns: false,
+    onColumnFiltersChange: setColumnFilters,
+    onGlobalFilterChange: setGlobalFilter,
+    globalFilterFn: fuzzyFilter,
+    // debugTable: true,
+    // debugHeaders: true,
+    // debugColumns: false,
   });
-
-  React.useEffect(() => {
-    if (table.getState().columnFilters[0]?.id === "fullName") {
-      if (table.getState().sorting[0]?.id !== "fullName") {
-        table.setSorting([{ id: "fullName", desc: false }]);
-      }
-    }
-  }, [table.getState().columnFilters[0]?.id]);
 
   const content = (
     <>
-      <div>
-        <TableInput
-          value={globalFilter ?? ""}
-          onChange={(value) => setGlobalFilter(String(value))}
-          className="p-2 font-lg shadow border border-block"
-          placeholder="Search all columns..."
-        />
-      </div>
-      <div className="h-2" />
-      <table>
+      <table className={styles.table}>
         <thead>
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
                 // ? Custom header component
                 if (!!HeaderComponent) {
-                  return <HeaderComponent header={header} table={table} />;
+                  return (
+                    <HeaderComponent
+                      key={header.id}
+                      header={header}
+                      table={table}
+                    />
+                  );
                 }
                 return (
                   <th key={header.id} colSpan={header.colSpan}>
@@ -190,7 +209,7 @@ const TableView = ({
           {table.getRowModel().rows.map((row) => {
             // ? Custom row component
             if (!!RowComponent) {
-              return <RowComponent row={row} />;
+              return <RowComponent key={row.id} row={row} />;
             }
             return (
               <tr key={row.id}>
@@ -209,13 +228,17 @@ const TableView = ({
           })}
         </tbody>
       </table>
-      <TablePageNavigator table={table} />
+      <TablePageNavigator
+        table={table}
+        globalFilter={globalFilter}
+        setGlobalFilter={setGlobalFilter}
+      />
     </>
   );
   if (!!ContainerComponent) {
     return <ContainerComponent>{content}</ContainerComponent>;
   }
-  return <div className="p-2">{content}</div>;
+  return <div className={styles.container}>{content}</div>;
 };
 
 export default TableView;
