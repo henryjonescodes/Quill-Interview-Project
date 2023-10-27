@@ -1,5 +1,7 @@
 import TableView, { Entry, Field } from "../components/table";
 import TableColumnHeader from "../components/table/components/TableColumnHeader";
+import TableContainer from "../components/table/components/TableContainer";
+import TableRow from "../components/table/components/TableRow";
 import styles from "./pages.module.css";
 
 const fields: Field[] = [
@@ -62,9 +64,11 @@ const Home = () => {
   return (
     <div className={styles.container}>
       <TableView
+        RowComponent={TableRow}
+        HeaderComponent={TableColumnHeader}
+        ContainerComponent={TableContainer}
         data={dummyData}
         fields={fields}
-        HeaderComponent={TableColumnHeader}
       />
     </div>
   );

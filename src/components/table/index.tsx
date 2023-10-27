@@ -4,7 +4,6 @@ import {
   ColumnDef,
   ColumnFiltersState,
   FilterFn,
-  flexRender,
   getCoreRowModel,
   getFacetedMinMaxValues,
   getFacetedRowModel,
@@ -16,16 +15,11 @@ import {
 } from "@tanstack/react-table";
 
 import { RankingInfo } from "@tanstack/match-sorter-utils";
-import TableColumnHeader, {
-  TableColumnHeaderProps,
-} from "./components/TableColumnHeader";
-import TableContainer, {
-  TableContainerProps,
-} from "./components/TableContainer";
+import { TableColumnHeaderProps } from "./components/TableColumnHeader";
+import { TableContainerProps } from "./components/TableContainer";
 import TablePageNavigator from "./components/TablePageNavigator";
-import TableRow, { TableRowProps } from "./components/TableRow";
-import TableFilter from "./components/table-filter";
-import styles from "./table.module.css";
+import { TableRowProps } from "./components/TableRow";
+import styles from "./table.module.scss";
 import {
   dateRangeFilter,
   dateRangeSort,
@@ -65,25 +59,25 @@ interface TableProps {
   fields: Field[];
   // dateField: string; // ! wtf is this?
 
-  HeaderComponent?: React.ComponentType<TableColumnHeaderProps>;
-  RowComponent?: React.ComponentType<TableRowProps>;
-  ContainerComponent?: React.ComponentType<TableContainerProps>;
+  HeaderComponent: React.ComponentType<TableColumnHeaderProps>;
+  RowComponent: React.ComponentType<TableRowProps>;
+  ContainerComponent: React.ComponentType<TableContainerProps>;
 }
 
 const TableView = ({
   fields,
   data,
-  HeaderComponent = TableColumnHeader,
-  RowComponent = TableRow,
-  ContainerComponent = TableContainer,
+  HeaderComponent,
+  RowComponent,
+  ContainerComponent,
   title = "Quill Table Demo",
 }: TableProps) => {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [globalFilter, setGlobalFilter] = useState<string | undefined>("");
 
-  useEffect(() => {
-    console.log("Filters\n", columnFilters, globalFilter);
-  }, [columnFilters, globalFilter]);
+  // useEffect(() => {
+  //   console.log("Filters\n", columnFilters, globalFilter);
+  // }, [columnFilters, globalFilter]);
 
   const columns: ColumnType[] = React.useMemo(() => {
     const optionsForField = (field: Field) => {
@@ -149,9 +143,6 @@ const TableView = ({
     onColumnFiltersChange: setColumnFilters,
     onGlobalFilterChange: setGlobalFilter,
     globalFilterFn: fuzzyFilter,
-    // debugTable: true,
-    // debugHeaders: true,
-    // debugColumns: false,
   });
 
   const content = (
@@ -161,45 +152,12 @@ const TableView = ({
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
-                // ? Custom header component
-                if (!!HeaderComponent) {
-                  return (
-                    <HeaderComponent
-                      key={header.id}
-                      header={header}
-                      table={table}
-                    />
-                  );
-                }
                 return (
-                  <th key={header.id} colSpan={header.colSpan}>
-                    {header.isPlaceholder ? null : (
-                      <>
-                        <div
-                          {...{
-                            className: header.column.getCanSort()
-                              ? "cursor-pointer select-none"
-                              : "",
-                            onClick: header.column.getToggleSortingHandler(),
-                          }}
-                        >
-                          {flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                          {{
-                            asc: " 🔼",
-                            desc: " 🔽",
-                          }[header.column.getIsSorted() as string] ?? null}
-                        </div>
-                        {header.column.getCanFilter() ? (
-                          <div>
-                            <TableFilter column={header.column} table={table} />
-                          </div>
-                        ) : null}
-                      </>
-                    )}
-                  </th>
+                  <HeaderComponent
+                    key={header.id}
+                    header={header}
+                    table={table}
+                  />
                 );
               })}
             </tr>
@@ -207,24 +165,7 @@ const TableView = ({
         </thead>
         <tbody>
           {table.getRowModel().rows.map((row) => {
-            // ? Custom row component
-            if (!!RowComponent) {
-              return <RowComponent key={row.id} row={row} />;
-            }
-            return (
-              <tr key={row.id}>
-                {row.getVisibleCells().map((cell) => {
-                  return (
-                    <td key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </td>
-                  );
-                })}
-              </tr>
-            );
+            return <RowComponent key={row.id} row={row} />;
           })}
         </tbody>
       </table>

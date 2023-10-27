@@ -1,0 +1,72 @@
+@import './../../table.module.scss';
+
+.filter {
+  height: 100%;
+
+  .button {
+    height: 100%;
+    cursor: pointer;
+    border: 1px solid $button-primary;
+    color: $button-primary;
+    background: $button-secondary;
+    border-radius: $button-radius;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px 8px;
+    margin: 8px 0px;
+    white-space: nowrap;
+  }
+}
+
+.filterContent {
+  position: absolute;
+  background-color: $filter-secondary;
+  border: 1px solid $filter-primary;
+  border-radius: $button-radius;
+}
+
+.checkboxes {
+  display: flex;
+  flex-direction: column;
+  max-height: 300px;
+  overflow: scroll;
+
+  div {
+    width: min-content;
+    display: flex;
+    padding: 4px 4px;
+    width: 100%;
+
+    &:not(:first-of-type) {
+      border-top: 1px solid gray;
+    }
+
+    label {
+      white-space: nowrap;
+    }
+  }
+}
+
+.dates {
+  display: flex;
+  flex-direction: column;
+  padding: 8px;
+
+  p {
+    font-size: 14px;
+    margin: 0px 0px 8px 0px;
+  }
+}
+
+.numbers {
+  display: flex;
+  flex-direction: column;
+  padding: 8px;
+
+  p {
+    white-space: nowrap;
+    font-size: 14px;
+    margin: 0px 0px 8px 0px;
+  }
+}

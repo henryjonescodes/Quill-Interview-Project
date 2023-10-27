@@ -1,4 +1,4 @@
-import styles from "./../../table.module.css";
+import styles from "./../../table.module.scss";
 import { SharedTableFilterProps } from ".";
 import TableInput from "../TableInput";
 

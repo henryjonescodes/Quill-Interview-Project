@@ -1,17 +1,16 @@
 import { Column, Table } from "@tanstack/react-table";
-import { Fragment, useMemo } from "react";
-import TableInput from "../TableInput";
+import { useMemo, useState } from "react";
+import { Entry } from "../..";
+import TableCheckboxFilter from "./TableCheckboxFilter";
+import TableDateRangeFilter from "./TableDateRangeFilter";
 import TableNumberRangeFilter, {
   RangeFilterType,
 } from "./TableNumberRangeFilter";
-import styles from "./../../table.module.css";
-import TableCheckboxFilter from "./TableCheckboxFilter";
 import TableTextFilter from "./TableTextFilter";
-import { Entry } from "../..";
-import TableDateRangeFilter from "./TableDateRangeFilter";
+import styles from "./table-filter.module.scss";
 
 export type SharedTableFilterProps = {
-  column: Column<Entry, unknown>;
+  column: Column<Entry, any>;
   table: Table<Entry>;
   sortedUniqueValues: any[];
   columnFilterValue: any;
@@ -23,6 +22,8 @@ type Props = {
 } & Pick<SharedTableFilterProps, "column" | "table">;
 
 const TableFilter = ({ column, table, checkboxThreshold = 10 }: Props) => {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+
   const firstValue = table
     .getPreFilteredRowModel()
     .flatRows[0]?.getValue(column.id);
@@ -36,6 +37,10 @@ const TableFilter = ({ column, table, checkboxThreshold = 10 }: Props) => {
         : Array.from(column.getFacetedUniqueValues().keys()).sort(),
     [column.getFacetedUniqueValues()]
   );
+
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
+  };
 
   const filterContent =
     typeof firstValue === "number" ? (
@@ -63,7 +68,14 @@ const TableFilter = ({ column, table, checkboxThreshold = 10 }: Props) => {
       />
     ) : null;
 
-  return <div className={styles.filter}>{filterContent}</div>;
+  return (
+    <div className={styles.filter}>
+      <div className={styles.button} onClick={toggleDropdown}>
+        + Add filter
+      </div>
+      {isOpen && <div className={styles.filterContent}>{filterContent}</div>}
+    </div>
+  );
 };
 
 export default TableFilter;

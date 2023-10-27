@@ -1,4 +1,4 @@
-import { RankingInfo, compareItems, rankItem } from "@tanstack/match-sorter-utils";
+import { compareItems, rankItem } from "@tanstack/match-sorter-utils";
 import { FilterFn, Row, SortingFn, sortingFns } from "@tanstack/react-table";
 import { useEffect } from "react";
 
@@ -31,7 +31,6 @@ export const dateRangeFilter: FilterFn<Date[]> = (
   filterValue: [Date, Date],
   addMeta: any
 ) => {
-  console.log('we in this')
   if (!Array.isArray(filterValue) || filterValue.length !== 2 || !filterValue[0] || !filterValue[1]) {
     return true;
   }
@@ -47,19 +46,6 @@ export const dateRangeFilter: FilterFn<Date[]> = (
 
 
 export const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
-  const cellValue = row.getValue(columnId);
-  console.log('Cell Value:', cellValue);
-  console.log('Type of Cell Value:', typeof cellValue);
-
-    // if(row.getValue(columnId) instanceof Date){
-      // console.log('date')
-      //   // Convert the date to its fullest string representation
-      // const _date = row.getValue(columnId) as Date
-      // const fullDateString = _date.toISOString();
-
-      // Check if the input string is included in the full date string
-      // return false;
-    // }
     const itemRank = rankItem(row.getValue(columnId), value);
 
     addMeta({

@@ -1,6 +1,6 @@
 import { Table } from "@tanstack/react-table";
 import React from "react";
-import styles from "./../table.module.css";
+import styles from "./table-components.module.scss";
 import TableInput from "./TableInput";
 import { Entry } from "..";
 
@@ -17,38 +17,34 @@ const TablePageNavigator = ({
 }: Props) => {
   return (
     <div className={styles.nav}>
-      <div className={styles.navButtons}>
+      <div>
         <span>
           <button
-            className={styles.navButton}
             onClick={() => table.setPageIndex(0)}
             disabled={!table.getCanPreviousPage()}
           >
             {"<<"}
           </button>
           <button
-            className={styles.navButton}
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
           >
             {"<"}
           </button>
         </span>
-        <span className={styles.navPageNumber}>
+        <span className={styles.pageNumber}>
           Page {table.getState().pagination.pageIndex + 1} of{" "}
           {table.getPageCount()}
         </span>
 
         <span>
           <button
-            className={styles.navButton}
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
           >
             {">"}
           </button>
           <button
-            className={styles.navButton}
             onClick={() => table.setPageIndex(table.getPageCount() - 1)}
             disabled={!table.getCanNextPage()}
           >
@@ -83,7 +79,7 @@ const TablePageNavigator = ({
       <div>{table.getPrePaginationRowModel().rows.length} Rows</div> */}
       </div>
       <TableInput
-        className={styles.navSearch}
+        className={styles.search}
         value={globalFilter ?? ""}
         onChange={(value) => setGlobalFilter(String(value))}
         placeholder="Search all columns..."

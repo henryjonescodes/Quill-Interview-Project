@@ -1,4 +1,6 @@
 import { SharedTableFilterProps } from ".";
+import TableInput from "../TableInput";
+import styles from "./table-filter.module.scss";
 
 export type DateRangeFilterType = [Date, Date];
 
@@ -8,26 +10,27 @@ const TableDateRangeFilter = ({ column, columnFilterValue }: Props) => {
   const minMaxValues = column.getFacetedMinMaxValues();
 
   return (
-    <>
-      <input
+    <div className={styles.dates}>
+      <p>Select date range</p>
+      <TableInput
         type="month"
         min={minMaxValues?.[0] ?? ""}
         max={minMaxValues?.[1] ?? ""}
         value={columnFilterValue?.[0] ?? ""}
-        onChange={(e) =>
-          column.setFilterValue((old) => [e.target.value, old?.[1]])
+        onChange={(value) =>
+          column.setFilterValue((old: DateRangeFilterType) => [old?.[1], value])
         }
       />
-      <input
+      <TableInput
         type="month"
         min={minMaxValues?.[0] ?? ""}
         max={minMaxValues?.[1] ?? ""}
         value={columnFilterValue?.[1] ?? ""}
-        onChange={(e) =>
-          column.setFilterValue((old) => [old?.[0], e.target.value])
+        onChange={(value) =>
+          column.setFilterValue((old: DateRangeFilterType) => [old?.[0], value])
         }
       />
-    </>
+    </div>
   );
 };
 

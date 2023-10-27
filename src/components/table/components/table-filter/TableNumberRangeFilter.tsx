@@ -1,8 +1,6 @@
-import { Column, Table } from "@tanstack/react-table";
-import { Fragment, useMemo } from "react";
-import styles from "./../../table.module.css";
-import TableInput from "../TableInput";
 import { SharedTableFilterProps } from ".";
+import TableInput from "../TableInput";
+import styles from "./table-filter.module.scss";
 
 export type RangeFilterType = [number, number];
 
@@ -10,7 +8,8 @@ type Props = Pick<SharedTableFilterProps, "column" | "columnFilterValue">;
 
 const TableNumberRangeFilter = ({ column, columnFilterValue }: Props) => {
   return (
-    <>
+    <div className={styles.numbers}>
+      <p>Select range</p>
       <TableInput
         type="number"
         min={Number(column.getFacetedMinMaxValues()?.[0] ?? "")}
@@ -19,8 +18,11 @@ const TableNumberRangeFilter = ({ column, columnFilterValue }: Props) => {
         onChange={(value) =>
           column.setFilterValue((old: RangeFilterType) => [value, old?.[1]])
         }
-        placeholder={`Min`}
-        className={styles.filterInput}
+        placeholder={`Min ${
+          column.getFacetedMinMaxValues()?.[0]
+            ? `(${column.getFacetedMinMaxValues()?.[0]})`
+            : ""
+        }`}
       />
       <TableInput
         type="number"
@@ -30,10 +32,13 @@ const TableNumberRangeFilter = ({ column, columnFilterValue }: Props) => {
         onChange={(value) =>
           column.setFilterValue((old: RangeFilterType) => [old?.[0], value])
         }
-        placeholder={`Max`}
-        className={styles.filterInput}
+        placeholder={`Max ${
+          column.getFacetedMinMaxValues()?.[1]
+            ? `(${column.getFacetedMinMaxValues()?.[1]})`
+            : ""
+        }`}
       />
-    </>
+    </div>
   );
 };
 

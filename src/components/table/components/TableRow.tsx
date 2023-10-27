@@ -1,6 +1,5 @@
 import { Row, flexRender } from "@tanstack/react-table";
-import React from "react";
-import styles from "./../table.module.css";
+import styles from "./table-components.module.scss";
 
 export type TableRowProps = {
   row: Row<any>;

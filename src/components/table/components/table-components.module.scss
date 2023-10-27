@@ -1,0 +1,60 @@
+.nav {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 230px;
+  border: 2px solid #c4c4c4;
+  padding: 8px;
+  border-radius: 12px;
+
+  button {
+    border: transparent;
+  }
+
+  div {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .pageNumber {
+    display: flex;
+    font-size: px;
+    font-weight: 800;
+  }
+
+  .search {
+    width: 100%;
+  }
+}
+
+
+.colHeader {
+  width: min-content;
+
+  div {
+    white-space: nowrap;
+  }
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 12px;
+  width: min-content;
+  gap: 32px;
+  padding: 20px;
+  border-radius: 16px;
+  background-color: #f1f1f1;
+  position: relative;
+}
+
+.row {
+  width: min-conent;
+  border: 1px solid green;
+  white-space: nowrap;
+}
