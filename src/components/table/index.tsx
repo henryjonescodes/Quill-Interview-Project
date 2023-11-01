@@ -59,7 +59,6 @@ interface TableProps {
   title?: string;
   data: ColumnsType[];
   fields: Field[];
-  // dateField: string; // ! wtf is this?
 
   HeaderComponent: React.ComponentType<TableColumnHeaderProps>;
   RowComponent: React.ComponentType<TableRowProps>;
