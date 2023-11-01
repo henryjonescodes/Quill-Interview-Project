@@ -17,9 +17,9 @@ const TableCheckboxFilter = ({
     if (!!setFilterText && !!columnFilterValue) {
       const _count = columnFilterValue?.length;
       setFilterText(!!_count ? `${_count} selected` : "");
-    } else {
-      setFilterText("");
+      return;
     }
+    setFilterText("");
   };
 
   useEffect(() => {

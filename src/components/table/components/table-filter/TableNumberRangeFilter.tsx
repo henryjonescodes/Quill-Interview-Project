@@ -22,7 +22,9 @@ const TableNumberRangeFilter = ({
           columnFilterValue[1],
         )}`,
       );
+      return;
     }
+    setFilterText("");
   };
 
   const getStringValue = (str: string) => {

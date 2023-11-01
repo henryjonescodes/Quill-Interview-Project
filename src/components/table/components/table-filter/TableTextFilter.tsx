@@ -18,8 +18,10 @@ const TableTextFilter = ({
 }: Props) => {
   const updateFilterText = () => {
     if (!!setFilterText && !!columnFilterValue) {
-      setFilterText(columnFilterValue ?? "");
+      setFilterText(columnFilterValue);
+      return;
     }
+    setFilterText("");
   };
 
   useEffect(() => {

@@ -57,7 +57,10 @@ const TableDateRangeFilter = ({
         max={minMaxValues?.[1] ?? ""}
         value={columnFilterValue?.[0] ?? ""}
         onChange={(value) =>
-          column.setFilterValue((old: DateRangeFilterType) => [value, old?.[1]])
+          column.setFilterValue((old: DateRangeFilterType) => [
+            value ?? "",
+            old?.[1],
+          ])
         }
       />
       <TableInput
@@ -66,7 +69,10 @@ const TableDateRangeFilter = ({
         max={minMaxValues?.[1] ?? ""}
         value={columnFilterValue?.[1] ?? ""}
         onChange={(value) =>
-          column.setFilterValue((old: DateRangeFilterType) => [old?.[0], value])
+          column.setFilterValue((old: DateRangeFilterType) => [
+            old?.[0],
+            value ?? "",
+          ])
         }
       />
     </div>
