@@ -2,10 +2,10 @@ import { Table } from "@tanstack/react-table";
 import React from "react";
 import styles from "./table-components.module.scss";
 import TableInput from "./TableInput";
-import { Entry } from "..";
+import { ColumnsType } from "..";
 
 type Props = {
-  table: Table<Entry>;
+  table: Table<ColumnsType>;
   globalFilter: string | undefined;
   setGlobalFilter: React.Dispatch<React.SetStateAction<string | undefined>>;
 };
@@ -17,7 +17,7 @@ const TablePageNavigator = ({
 }: Props) => {
   return (
     <div className={styles.nav}>
-      <div>
+      <div className={styles.buttons}>
         <span>
           <button
             onClick={() => table.setPageIndex(0)}
@@ -32,7 +32,7 @@ const TablePageNavigator = ({
             {"<"}
           </button>
         </span>
-        <span className={styles.pageNumber}>
+        <span className={styles.number}>
           Page {table.getState().pagination.pageIndex + 1} of{" "}
           {table.getPageCount()}
         </span>

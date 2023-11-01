@@ -1,4 +1,4 @@
-import TableView, { Entry, Field } from "../components/table";
+import TableView, { ColumnsType, Field } from "../components/table";
 import TableColumnHeader from "../components/table/components/TableColumnHeader";
 import TableContainer from "../components/table/components/TableContainer";
 import TableRow from "../components/table/components/TableRow";
@@ -8,6 +8,11 @@ const fields: Field[] = [
   {
     name: "id",
     label: "ID",
+    jsType: "string",
+  },
+  {
+    name: "category",
+    label: "Category",
     jsType: "string",
   },
   {
@@ -39,7 +44,7 @@ const getRandomDate = (start: Date, end: Date): Date => {
 };
 
 const Home = () => {
-  const dummyData: Entry[] = Array(30)
+  const dummyData: ColumnsType[] = Array(30)
     .fill(null)
     .map((_, index) => {
       const id = `ID-${index + 1}`;
@@ -48,6 +53,9 @@ const Home = () => {
       const assignee =
         Math.random() < 0.5 ? `Assignee-${index + 1}` : undefined;
       const storyPoints = Math.floor(Math.random() * 10) + 1;
+      const category = ["Task", "Event", "Report", "Note"][
+        Math.floor(Math.random() * 4)
+      ];
 
       return {
         id,
@@ -55,6 +63,7 @@ const Home = () => {
         dateModified,
         assignee,
         storyPoints,
+        category,
       };
     });
 

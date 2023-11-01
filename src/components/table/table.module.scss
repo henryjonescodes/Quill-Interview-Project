@@ -1,26 +1,25 @@
-$button-primary: #000;
-$button-secondary: #d9d9d9;
-$button-radius: 8px;
+$button-primary: #0080ff;
 
-$filter-primary: #000;
-$filter-secondary: #fff;
-
-$cell-primary: #000;
-$cell-secondary: #000;
+$container-primary: #f3f3f3;
+$container-secondary: #fff;
+$container-tertiary: #7c7c7c;
+$container-quaternary: #c7c7c7;
 
 .table {
-  max-width: 100%;
-}
-
-.container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: 12px;
-  width: min-content;
-  gap: 32px;
-  padding: 20px;
-  border-radius: 16px;
-  background-color: #f1f1f1;
+  height: 100%;
+  overflow: scroll;
   position: relative;
+
+  .reactTable {
+    max-width: 100%;
+    border-spacing: 0px;
+
+
+    thead {
+      position: sticky;
+      top: 0px;
+      margin: 0 0 0 0;
+      background-color: $container-secondary;
+    }
+  }
 }

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 import {
   ColumnDef,
@@ -37,25 +37,27 @@ declare module "@tanstack/table-core" {
   }
 }
 
+type JsTypeToTsType = {
+  string: string;
+  date: Date;
+  number: number;
+};
+
 export interface Field {
   name: string;
   label: string;
-  jsType: "date" | "string" | "number";
+  jsType: keyof JsTypeToTsType;
 }
 
-export type Entry = {
-  id: string;
-  dateModified: Date;
-  dateCreated: Date;
-  assignee?: string;
-  storyPoints?: number;
+export type ColumnsType = {
+  [P in Field["name"]]?: JsTypeToTsType[Extract<Field, { name: P }>["jsType"]];
 };
 
-type ColumnType = ColumnDef<Entry>;
+type ColumnType = ColumnDef<ColumnsType>;
 
 interface TableProps {
   title?: string;
-  data: Entry[];
+  data: ColumnsType[];
   fields: Field[];
   // dateField: string; // ! wtf is this?
 
@@ -75,10 +77,6 @@ const TableView = ({
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [globalFilter, setGlobalFilter] = useState<string | undefined>("");
 
-  // useEffect(() => {
-  //   console.log("Filters\n", columnFilters, globalFilter);
-  // }, [columnFilters, globalFilter]);
-
   const columns: ColumnType[] = React.useMemo(() => {
     const optionsForField = (field: Field) => {
       switch (field.jsType) {
@@ -86,11 +84,9 @@ const TableView = ({
           return {
             sortingFn: dateRangeSort,
             filterFn: dateRangeFilter,
-            // accessorKey: new Date(field.name),
-            // flexRender: (row: any) => {
-            //   new Date(row[field.name]).toLocaleDateString();
-            // },
-            accessorFn: (row: any) => new Date(row[field.name]),
+            accessorKey: "date",
+            accessorFn: (row: any) =>
+              new Date(row[field.name]).toLocaleDateString(),
           };
         case "number":
           return {
@@ -124,7 +120,7 @@ const TableView = ({
   }, [fields]);
 
   const table = useReactTable({
-    data: data as Entry[],
+    data: data as ColumnsType[],
     columns: columns as ColumnType[],
     filterFns: {
       fuzzy: fuzzyFilter,
@@ -147,28 +143,30 @@ const TableView = ({
 
   const content = (
     <>
-      <table className={styles.table}>
-        <thead>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <tr key={headerGroup.id}>
-              {headerGroup.headers.map((header) => {
-                return (
-                  <HeaderComponent
-                    key={header.id}
-                    header={header}
-                    table={table}
-                  />
-                );
-              })}
-            </tr>
-          ))}
-        </thead>
-        <tbody>
-          {table.getRowModel().rows.map((row) => {
-            return <RowComponent key={row.id} row={row} />;
-          })}
-        </tbody>
-      </table>
+      <div className={styles.table}>
+        <table className={styles.reactTable}>
+          <thead>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <tr key={headerGroup.id}>
+                {headerGroup.headers.map((header) => {
+                  return (
+                    <HeaderComponent
+                      key={header.id}
+                      header={header}
+                      table={table}
+                    />
+                  );
+                })}
+              </tr>
+            ))}
+          </thead>
+          <tbody className={styles.body}>
+            {table.getRowModel().rows.map((row) => {
+              return <RowComponent key={row.id} row={row} />;
+            })}
+          </tbody>
+        </table>
+      </div>
       <TablePageNavigator
         table={table}
         globalFilter={globalFilter}

@@ -6,30 +6,27 @@
   .button {
     height: 100%;
     cursor: pointer;
-    border: 1px solid $button-primary;
     color: $button-primary;
-    background: $button-secondary;
-    border-radius: $button-radius;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 4px 8px;
-    margin: 8px 0px;
     white-space: nowrap;
+    margin: 0px;
+    font-size: 12px;
   }
 }
 
 .filterContent {
   position: absolute;
-  background-color: $filter-secondary;
-  border: 1px solid $filter-primary;
-  border-radius: $button-radius;
+  background-color: $container-quaternary;
+  border-radius: 8px;
 }
 
 .checkboxes {
   display: flex;
   flex-direction: column;
-  max-height: 300px;
+  max-height: 150px;
   overflow: scroll;
 
   div {
@@ -69,4 +66,8 @@
     font-size: 14px;
     margin: 0px 0px 8px 0px;
   }
+}
+
+.textFilter {
+  padding: 8px;
 }

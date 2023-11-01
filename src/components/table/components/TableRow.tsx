@@ -8,10 +8,6 @@ const TableRow = ({ row }: TableRowProps) => {
   return (
     <tr key={row.id} className={styles.row}>
       {row.getVisibleCells().map((cell) => {
-        if (cell.getValue() instanceof Date) {
-          const _date = cell.getValue() as Date;
-          return <td key={cell.id}>{_date.toLocaleDateString()}</td>;
-        }
         return (
           <td key={cell.id}>
             {flexRender(cell.column.columnDef.cell, cell.getContext())}

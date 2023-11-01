@@ -1,21 +1,33 @@
-import styles from "./../../table.module.scss";
+import styles from "./table-filter.module.scss";
 import { SharedTableFilterProps } from ".";
 import TableInput from "../TableInput";
+import { useEffect } from "react";
 
 export type RangeFilterType = [number, number];
 
 type Props = Pick<
   SharedTableFilterProps,
-  "column" | "columnFilterValue" | "sortedUniqueValues"
+  "column" | "columnFilterValue" | "sortedUniqueValues" | "setFilterText"
 >;
 
 const TableTextFilter = ({
   column,
   columnFilterValue,
   sortedUniqueValues,
+  setFilterText,
 }: Props) => {
+  const updateFilterText = () => {
+    if (!!setFilterText && !!columnFilterValue) {
+      setFilterText(columnFilterValue ?? "");
+    }
+  };
+
+  useEffect(() => {
+    updateFilterText();
+  }, [columnFilterValue]);
+
   return (
-    <>
+    <div className={styles.textFilter}>
       <datalist id={column.id + "list"}>
         {sortedUniqueValues.map((value: any) => (
           <option value={value} key={value} />
@@ -24,13 +36,13 @@ const TableTextFilter = ({
 
       <TableInput
         type="text"
-        value={(columnFilterValue ?? "") as string}
+        value={(columnFilterValue?.[0] ?? "") as string}
         onChange={(value) => column.setFilterValue(value ? [value] : null)}
         placeholder={`Search...`}
         className={styles.filterInput}
         list={column.id + "list"}
       />
-    </>
+    </div>
   );
 };
 
