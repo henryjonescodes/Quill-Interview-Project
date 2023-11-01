@@ -39,7 +39,7 @@ const TableTextFilter = ({
         value={(columnFilterValue?.[0] ?? "") as string}
         onChange={(value) => column.setFilterValue(value ? [value] : null)}
         placeholder={`Search...`}
-        className={styles.filterInput}
+        className={styles.input}
         list={column.id + "list"}
       />
     </div>

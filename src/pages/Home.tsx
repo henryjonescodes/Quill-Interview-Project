@@ -17,12 +17,12 @@ const fields: Field[] = [
   },
   {
     name: "dateModified",
-    label: "Date Modified",
+    label: "Modified",
     jsType: "date",
   },
   {
     name: "dateCreated",
-    label: "Date Created",
+    label: "Created",
     jsType: "date",
   },
   {
@@ -32,14 +32,14 @@ const fields: Field[] = [
   },
   {
     name: "storyPoints",
-    label: "Story Points",
+    label: "Points",
     jsType: "number",
   },
 ];
 
 const getRandomDate = (start: Date, end: Date): Date => {
   return new Date(
-    start.getTime() + Math.random() * (end.getTime() - start.getTime())
+    start.getTime() + Math.random() * (end.getTime() - start.getTime()),
   );
 };
 
@@ -50,8 +50,7 @@ const Home = () => {
       const id = `ID-${index + 1}`;
       const dateCreated = getRandomDate(new Date(2022, 0, 1), new Date());
       const dateModified = getRandomDate(dateCreated, new Date());
-      const assignee =
-        Math.random() < 0.5 ? `Assignee-${index + 1}` : undefined;
+      const assignee = `Assignee-${index + 1}`;
       const storyPoints = Math.floor(Math.random() * 10) + 1;
       const category = ["Task", "Event", "Report", "Note"][
         Math.floor(Math.random() * 4)

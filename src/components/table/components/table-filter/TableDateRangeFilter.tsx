@@ -50,7 +50,7 @@ const TableDateRangeFilter = ({
 
   return (
     <div className={styles.dates}>
-      <p>Select date range</p>
+      <p>Date range</p>
       <TableInput
         type="month"
         min={minMaxValues?.[0] ?? ""}

@@ -36,7 +36,7 @@ const TableCheckboxFilter = ({
 
   const items = useMemo(() => {
     const _diff = columnFilterValue?.filter(
-      (element) => !sortedUniqueValues.includes(element)
+      (element) => !sortedUniqueValues.includes(element),
     );
 
     const _arr = !!_diff
@@ -47,14 +47,11 @@ const TableCheckboxFilter = ({
         <div className={styles.checkbox}>
           <input
             type="checkbox"
-            style={{
-              marginRight: "8px",
-            }}
             id={option}
             name={option}
             value={option}
             checked={Boolean(
-              [...((columnFilterValue as string[]) ?? [])]?.includes(option)
+              [...((columnFilterValue as string[]) ?? [])]?.includes(option),
             )}
             onChange={(e) => {
               column.setFilterValue(toggle(columnFilterValue, e.target.value));

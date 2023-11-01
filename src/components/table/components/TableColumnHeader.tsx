@@ -17,10 +17,16 @@ const TableColumnHeader = ({ header, table }: TableColumnHeaderProps) => {
             onClick={header.column.getToggleSortingHandler()}
           >
             {flexRender(header.column.columnDef.header, header.getContext())}
-            {{
-              asc: " 🔼",
-              desc: " 🔽",
-            }[header.column.getIsSorted() as string] ?? null}
+            {header.column.getIsSorted() && (
+              <div className={styles.indicator}>
+                {
+                  {
+                    asc: " 🔼",
+                    desc: " 🔽",
+                  }[header.column.getIsSorted() as string]
+                }
+              </div>
+            )}
           </div>
           {header.column.getCanFilter() ? (
             <TableFilter column={header.column} table={table} />

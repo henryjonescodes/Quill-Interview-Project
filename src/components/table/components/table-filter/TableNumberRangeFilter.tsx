@@ -19,8 +19,8 @@ const TableNumberRangeFilter = ({
     if (!!setFilterText && !!columnFilterValue) {
       setFilterText(
         `${getStringValue(columnFilterValue[0])} ... ${getStringValue(
-          columnFilterValue[1]
-        )}`
+          columnFilterValue[1],
+        )}`,
       );
     }
   };
@@ -38,7 +38,7 @@ const TableNumberRangeFilter = ({
 
   return (
     <div className={styles.numbers}>
-      <p>Select range</p>
+      <p>Number range</p>
       <TableInput
         type="number"
         min={Number(column.getFacetedMinMaxValues()?.[0] ?? "")}

@@ -1,5 +1,4 @@
-@import './../table.module.scss';
-
+@import "./../table.module.scss";
 
 .nav {
   z-index: 1;
@@ -10,9 +9,7 @@
   align-items: center;
   gap: 8px;
   padding: 8px;
-
-  // border-top: 1px solid $container-tertiary;
-
+  user-select: none;
 
   .buttons {
     width: min-content;
@@ -21,18 +18,26 @@
     align-items: center;
     justify-content: space-between;
     white-space: nowrap;
-    gap: 8px;
 
     button {
       border: transparent;
       background-color: transparent;
       padding: 0px 2px;
+      cursor: pointer;
+      transition: opacity 0.2s;
+      opacity: 1;
+
+      &:hover {
+        opacity: 0.5;
+      }
     }
 
     .number {
       display: flex;
       font-size: 12px;
       font-weight: 800;
+      width: 80px;
+      justify-content: center;
     }
   }
 
@@ -41,18 +46,28 @@
   }
 }
 
-
 .colHeader {
-  width: min-content;
   padding: 0 0 0 0;
+  min-width: 120px;
 
   .content {
     padding: 4px 12px;
   }
 
   .text {
+    cursor: pointer;
+    user-select: none;
     white-space: nowrap;
-    line-height: 22px;
+    gap: 4px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .indicator {
+      line-height: 18px;
+      font-size: 18px;
+    }
   }
 }
 
@@ -63,13 +78,13 @@
   align-items: center;
   margin: 12px;
   width: min-content;
-  border-radius: 16px;
+  border-radius: 12px;
   background-color: $container-primary;
   position: relative;
   overflow: hidden;
 
-  // max-height: 300px;
-  // height: 300px;
+  max-height: 330px;
+  height: 330px;
 }
 
 .row {

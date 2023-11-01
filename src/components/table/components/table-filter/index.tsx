@@ -37,7 +37,7 @@ const TableFilter = ({ column, table, checkboxThreshold = 10 }: Props) => {
       typeof firstValue === "number"
         ? []
         : Array.from(column.getFacetedUniqueValues().keys()).sort(),
-    [column.getFacetedUniqueValues()]
+    [column.getFacetedUniqueValues()],
   );
 
   const toggleDropdown = () => {

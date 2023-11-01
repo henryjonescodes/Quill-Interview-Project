@@ -1,7 +1,8 @@
-@import './../../table.module.scss';
+@import "./../../table.module.scss";
 
 .filter {
   height: 100%;
+  position: relative;
 
   .button {
     height: 100%;
@@ -10,10 +11,17 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 4px 8px;
     white-space: nowrap;
     margin: 0px;
-    font-size: 12px;
+    font-size: 11px;
+    user-select: none;
+
+    transition: opacity 0.2s;
+    opacity: 1;
+
+    &:hover {
+      opacity: 0.8;
+    }
   }
 }
 
@@ -21,12 +29,17 @@
   position: absolute;
   background-color: $container-quaternary;
   border-radius: 8px;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: 115px;
+  box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.1);
 }
 
 .checkboxes {
   display: flex;
   flex-direction: column;
-  max-height: 150px;
+  max-height: 220px;
   overflow: scroll;
 
   div {
@@ -34,6 +47,13 @@
     display: flex;
     padding: 4px 4px;
     width: 100%;
+    align-items: center;
+    transition: background-color 0.3s;
+    background-color: transparent;
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.1);
+    }
 
     &:not(:first-of-type) {
       border-top: 1px solid gray;
@@ -41,6 +61,9 @@
 
     label {
       white-space: nowrap;
+      user-select: none;
+      padding-right: 3px;
+      font-size: 12px;
     }
   }
 }
@@ -53,6 +76,7 @@
   p {
     font-size: 14px;
     margin: 0px 0px 8px 0px;
+    user-select: none;
   }
 }
 
@@ -70,4 +94,8 @@
 
 .textFilter {
   padding: 8px;
+
+  .input {
+    max-width: 100%;
+  }
 }
